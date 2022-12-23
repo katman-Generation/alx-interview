@@ -18,6 +18,6 @@ def pascal_triangle(n):
                 temp_List.append(1)
             else:
                 temp_List.append(main_List[t-1][k-1] + main_List[t-1][k])
-    main_List.append(temp_List)
-
+        main_List.append(temp_List)
+    
     return main_List
