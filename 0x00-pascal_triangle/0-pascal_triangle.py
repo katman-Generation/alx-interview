@@ -16,7 +16,7 @@ def pascal_triangle(n):
     for t in range(n):
         temp_List = []
         for k in range(t+1):
-            if t == 0 or k == t or k == 0:
+            if k == t or k == 0:
                 temp_List.append(1)
             else:
                 temp_List.append(main_List[t-1][k-1] + main_List[t-1][k])
