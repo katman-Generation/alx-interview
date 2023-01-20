@@ -1,13 +1,13 @@
 #!/usr/bin/python3
 """
-Log parsing
+Python script that reads stdin line by line and computes metrics
 """
 import sys
 
 
 def print_metrics(file_size, status_codes):
     """
-    Print metrics
+    Prints total file size and status list
     """
     print("File size: {}".format(file_size))
     codes_sorted = sorted(status_codes.keys())
