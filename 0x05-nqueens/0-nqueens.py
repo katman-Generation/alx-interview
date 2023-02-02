@@ -1,68 +1,52 @@
 #!/usr/bin/python3
-"""
-Solution to the nqueens problem
-"""
+"""Solving the N Queens problem"""
 import sys
 
 
-def backtrack(r, n, cols, pos, neg, board):
-    """
-    backtrack function to find solution
-    """
-    if r == n:
-        res = []
-        for i in range(len(board)):
-            for k in range(len(board[i])):
-                if board[i][k] == 1:
-                    res.append([i, k])
-        print(res)
+args = sys.argv
+
+if len(args) != 2:
+    print("Usage: nqueens N")
+    exit(1)
+
+if args[1].isdigit() is False:
+    print("N must be a number")
+    exit(1)
+
+layout = int(args[1])
+if layout < 4:
+    print("N must be at least 4")
+    exit(1)
+
+
+def check_here(nlist, index, curr_num):
+    for item in nlist:
+        if index == item[1] or\
+                index == item[1] - (curr_num - item[0]) or\
+                index == item[1] + (curr_num - item[0]):
+            return 1
+    return list([curr_num, index])
+
+
+def loop_n_find(nlist, curr_num):
+    if (curr_num > layout):
         return
 
-    for c in range(n):
-        if c in cols or (r + c) in pos or (r - c) in neg:
-            continue
+    if len(nlist) == layout:
+        print(nlist)
+        return
 
-        cols.add(c)
-        pos.add(r + c)
-        neg.add(r - c)
-        board[r][c] = 1
-
-        backtrack(r+1, n, cols, pos, neg, board)
-
-        cols.remove(c)
-        pos.remove(r + c)
-        neg.remove(r - c)
-        board[r][c] = 0
+    j = 0
+    while j < layout:
+        val = check_here(nlist, j, curr_num)
+        if type(val) is list:
+            new_nlist = nlist.copy()
+            new_nlist.append(val)
+            loop_n_find(new_nlist, curr_num + 1)
+        j += 1
+    return
 
 
-def nqueens(n):
-    """
-    Solution to nqueens problem
-    Args:
-        n (int): number of queens. Must be >= 4
-    Return:
-        List of lists representing coordinates of each
-        queen for all possible solutions
-    """
-    cols = set()
-    pos_diag = set()
-    neg_diag = set()
-    board = [[0] * n for i in range(n)]
-
-    backtrack(0, n, cols, pos_diag, neg_diag, board)
-
-
-if __name__ == "__main__":
-    n = sys.argv
-    if len(n) != 2:
-        print("Usage: nqueens N")
-        sys.exit(1)
-    try:
-        nn = int(n[1])
-        if nn < 4:
-            print("N must be at least 4")
-            sys.exit(1)
-        nqueens(nn)
-    except ValueError:
-        print("N must be a number")
-        sys.exit(1)
+for i in range(layout):
+    arr = [[0, i]]
+    loop_n_find(arr, 1)
